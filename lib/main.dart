@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:homecare_admin/ui/screens/home_screen.dart';
+import 'package:homecare_admin/ui/screens/login_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,19 +14,19 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Homecare Admin',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.green,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.white,
+          centerTitle: true,
+          iconTheme: IconThemeData(
+            color: Colors.black,
+          ),
+        ),
+        scaffoldBackgroundColor: Color(0xFFE3F3DF),
       ),
-      home: const LoginScreen(),
+      home: const HomeScreen(),
     );
-  }
-}
-
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
   }
 }
