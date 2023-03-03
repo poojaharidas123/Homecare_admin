@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:homecare_admin/ui/screens/home_screen_sections.dart/nurse_management_section.dart';
+import 'package:homecare_admin/ui/screens/home_screen_sections.dart/nurse_request_section.dart';
+import 'package:homecare_admin/ui/screens/home_screen_sections.dart/psyments_section.dart';
+import 'package:homecare_admin/ui/screens/home_screen_sections.dart/reports_section.dart';
+import 'package:homecare_admin/ui/screens/home_screen_sections.dart/user_management_section.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -13,7 +18,11 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   void initState() {
-    tabController = TabController(length: 3, vsync: this);
+    tabController = TabController(
+      length: 6,
+      initialIndex: 3,
+      vsync: this,
+    );
     super.initState();
   }
 
@@ -34,12 +43,11 @@ class _HomeScreenState extends State<HomeScreen>
           Container(
             color: Colors.red,
           ),
-          Container(
-            color: Colors.blue,
-          ),
-          Container(
-            color: Colors.yellow,
-          ),
+          const UserManagementSection(),
+          const NurseManagementSection(),
+          const NurseRequestSection(),
+          const PaymentSection(),
+          const ReportsSection(),
         ],
       ),
       drawer: SizedBox(
@@ -90,6 +98,42 @@ class _HomeScreenState extends State<HomeScreen>
                 isSelected: tabController.index == 2,
                 onTap: () {
                   tabController.animateTo(2);
+                  setState(() {});
+                  Navigator.pop(context);
+                },
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              CustomDrawerButton(
+                label: "Nurse Requests",
+                isSelected: tabController.index == 3,
+                onTap: () {
+                  tabController.animateTo(3);
+                  setState(() {});
+                  Navigator.pop(context);
+                },
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              CustomDrawerButton(
+                label: "Payments",
+                isSelected: tabController.index == 4,
+                onTap: () {
+                  tabController.animateTo(4);
+                  setState(() {});
+                  Navigator.pop(context);
+                },
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              CustomDrawerButton(
+                label: "Reports",
+                isSelected: tabController.index == 5,
+                onTap: () {
+                  tabController.animateTo(5);
                   setState(() {});
                   Navigator.pop(context);
                 },
