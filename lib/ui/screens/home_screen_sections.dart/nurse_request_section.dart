@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -19,9 +21,10 @@ class NurseRequestSection extends StatelessWidget {
                 height: 60,
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Home Nurse Request',
+                    'Home Nurse Request Management',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -38,15 +41,195 @@ class NurseRequestSection extends StatelessWidget {
                     vertical: 20,
                   ),
                   child: Column(
-                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('#id'),
+                          Column(
+                            children: [
+                              Text(
+                                'user',
+                                style:
+                                    TextStyle(color: Colors.grey, fontSize: 10),
+                              ),
+                              SizedBox(height: 2),
+                              Text(
+                                '#id',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
                           SizedBox(
                             width: 200,
                           ),
+                          Text(
+                            'Pending',
+                            style: TextStyle(
+                              color: Color(0xFFAAD013),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Patient Deatils:',
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 10,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 2,
+                              ),
+                              Text(
+                                'Krithya M P',
+                                style: TextStyle(fontWeight: FontWeight.w600),
+                              ),
+                              SizedBox(height: 3),
+                              Row(
+                                children: [
+                                  Text('5 months'),
+                                  SizedBox(width: 5),
+                                  Text('F'),
+                                ],
+                              ),
+                            ],
+                          ),
+                          SizedBox(width: 168),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Date Range:',
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 10,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 2,
+                              ),
+                              Row(
+                                children: [
+                                  Text('14/11/2022'),
+                                  Text(' - '),
+                                  Text('31/03/2023'),
+                                ],
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Time Range:',
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 10,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 2,
+                              ),
+                              Text('01:00 PM - 04:00 PM'),
+                            ],
+                          ),
+                          SizedBox(width: 113),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Health Conditions',
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 10,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 2,
+                              ),
+                              Text('Cough,Fever,Cold'),
+                            ],
+                          ),
+                          const Expanded(child: SizedBox()),
+                          SizedBox(
+                            width: 150,
+                            child: CustomButton(
+                              label: 'Assign Request',
+                              onPressed: () {},
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 15,
+                                vertical: 10,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      Divider(),
+                      SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Text(
+                            'Meditations',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Text('OTC Cough Medicine'),
+                          SizedBox(
+                            width: 100,
+                          ),
+                          Text('1-0-0-1'),
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Text('Acetaminophen'),
+                          SizedBox(
+                            width: 133,
+                          ),
+                          Text('1-1-0-0'),
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Text('Nasal Saline Drops'),
+                          SizedBox(
+                            width: 114,
+                          ),
+                          Text('1-0-0-1'),
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      Divider(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Assign Request'),
                           IconButton(
                             onPressed: () {},
                             icon: Icon(
@@ -57,90 +240,26 @@ class NurseRequestSection extends StatelessWidget {
                           ),
                         ],
                       ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
+                      Row(
                         children: [
                           Text(
-                            'Patient Details',
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 10,
-                            ),
+                            'Pooja Haridas',
+                            style: TextStyle(fontWeight: FontWeight.bold),
                           ),
-                          const SizedBox(
-                            height: 10,
-                          ),
+                        ],
+                      ),
+                      SizedBox(height: 5),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Reason'),
                           Text(
-                            'Krithya M P',
+                            'Pending',
                             style: TextStyle(
-                              fontSize: 13,
+                              color: Color(0xFFAAD013),
                             ),
                           ),
-                          Row(
-                            children: [
-                              Text(
-                                '5 months',
-                                style: TextStyle(
-                                  fontSize: 13,
-                                ),
-                              ),
-                              SizedBox(width: 5),
-                              Text(
-                                'F',
-                                style: TextStyle(
-                                  fontSize: 13,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                '14/11/2022',
-                                style: TextStyle(
-                                  fontSize: 13,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Text(
-                                '31/03/2023',
-                                style: TextStyle(
-                                  fontSize: 13,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Text(
-                            '01:00 PM - 04:00 PM',
-                            style: TextStyle(
-                              fontSize: 13,
-                            ),
-                          ),
-                          Text(
-                            'Cough',
-                            style: TextStyle(
-                              fontSize: 13,
-                            ),
-                          ),
-                          Text(
-                            'Fever',
-                            style: TextStyle(
-                              fontSize: 13,
-                            ),
-                          ),
-                          Text(
-                            'Cold',
-                            style: TextStyle(
-                              fontSize: 13,
-                            ),
-                          ),
-                          CustomButton(label: 'Add', onPressed: () {})
                         ],
                       ),
                     ],

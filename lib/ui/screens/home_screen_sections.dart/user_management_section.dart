@@ -17,7 +17,10 @@ class UserManagementSection extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text("User Management"),
+                  Text(
+                    "User Management",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ],
               ),
               SizedBox(

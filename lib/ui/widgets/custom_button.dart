@@ -6,16 +6,18 @@ class CustomButton extends StatelessWidget {
   final BorderRadius? borderRadius;
   final IconData? iconData;
   final Color? buttonColor, textColor;
+  final EdgeInsets? padding;
 
-  const CustomButton({
-    Key? key,
-    required this.label,
-    required this.onPressed,
-    this.borderRadius,
-    this.buttonColor,
-    this.iconData,
-    this.textColor = Colors.white,
-  }) : super(key: key);
+  const CustomButton(
+      {Key? key,
+      required this.label,
+      required this.onPressed,
+      this.borderRadius,
+      this.buttonColor,
+      this.iconData,
+      this.textColor = Colors.white,
+      this.padding})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +28,11 @@ class CustomButton extends StatelessWidget {
         onTap: onPressed,
         borderRadius: borderRadius ?? BorderRadius.circular(45),
         child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 20,
-            vertical: 20,
-          ),
+          padding: padding ??
+              const EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 20,
+              ),
           child: Row(
             children: [
               iconData != null
