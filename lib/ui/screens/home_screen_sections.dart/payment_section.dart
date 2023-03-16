@@ -29,6 +29,44 @@ class PaymentSection extends StatelessWidget {
               SizedBox(
                 height: 20,
               ),
+              Row(
+                children: [
+                  SizedBox(
+                    width: 100,
+                    child: Material(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 15),
+                        child: Center(
+                          child: Text(
+                            'Pending',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 30),
+                  SizedBox(
+                    width: 100,
+                    child: Material(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15),
+                      child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 15),
+                          child: Center(
+                              child: Text(
+                            'Paid',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ))),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 20),
               Material(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(15),

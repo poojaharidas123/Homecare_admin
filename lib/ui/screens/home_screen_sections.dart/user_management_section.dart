@@ -37,9 +37,41 @@ class UserManagementSection extends StatelessWidget {
                   child: Column(
                     children: [
                       Row(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'user',
+                                style:
+                                    TextStyle(color: Colors.grey, fontSize: 10),
+                              ),
+                              Text(
+                                '#UserId',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Krithya M P'),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Patient',
+                                style:
+                                    TextStyle(color: Colors.grey, fontSize: 10),
+                              ),
+                              Text(
+                                'Krithya M P',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
                           IconButton(
                             onPressed: () {},
                             icon: Icon(

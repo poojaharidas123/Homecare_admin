@@ -36,7 +36,11 @@ class ComplaintSection extends StatelessWidget {
                       child: Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 15, vertical: 15),
-                          child: Center(child: Text('Nurse'))),
+                          child: Center(
+                              child: Text(
+                            'Nurse',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ))),
                     ),
                   ),
                   SizedBox(width: 30),
@@ -48,7 +52,11 @@ class ComplaintSection extends StatelessWidget {
                       child: Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 15, vertical: 15),
-                          child: Center(child: Text('User'))),
+                          child: Center(
+                              child: Text(
+                            'User',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ))),
                     ),
                   ),
                 ],
