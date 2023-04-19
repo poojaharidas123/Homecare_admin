@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:homecare_admin/ui/screens/home_screen.dart';
-import 'package:homecare_admin/ui/screens/login_screen.dart';
+import 'package:homecare_admin/values/values.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,7 +24,17 @@ class MyApp extends StatelessWidget {
             color: Colors.black,
           ),
         ),
-        scaffoldBackgroundColor: Color(0xFFE3F3DF),
+        inputDecorationTheme: ThemeData.light().inputDecorationTheme.copyWith(
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 15,
+                vertical: 10,
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+                borderSide: BorderSide.none,
+              ),
+            ),
+        scaffoldBackgroundColor: secondaryColor,
       ),
       home: const HomeScreen(),
     );

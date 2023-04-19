@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -8,65 +9,46 @@ class PaymentSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(
           width: 1000,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 60,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Payment',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ],
+              const Text(
+                'Payment',
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
-              SizedBox(
-                height: 20,
+              const SizedBox(
+                height: 10,
               ),
-              Row(
-                children: [
-                  SizedBox(
-                    width: 100,
-                    child: Material(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 15),
-                        child: Center(
-                          child: Text(
-                            'Pending',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
+              CupertinoSlidingSegmentedControl<String>(
+                groupValue: 'pending',
+                children: {
+                  'pending': Text(
+                    'Pending',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          fontWeight: FontWeight.bold,
                         ),
-                      ),
-                    ),
                   ),
-                  SizedBox(width: 30),
-                  SizedBox(
-                    width: 100,
-                    child: Material(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
-                      child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 15),
-                          child: Center(
-                              child: Text(
-                            'Paid',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ))),
-                    ),
+                  'paid': Text(
+                    'Paid',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
-                ],
+                },
+                onValueChanged: (status) {},
               ),
-              SizedBox(height: 20),
+              const SizedBox(
+                height: 10,
+              ),
+              const Divider(height: 1),
               Material(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(15),

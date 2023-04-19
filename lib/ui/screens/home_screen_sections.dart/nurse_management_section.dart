@@ -1,233 +1,198 @@
-import 'dart:html';
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:homecare_admin/ui/screens/home_screen_sections.dart/user_management_section.dart';
+
+import '../../widgets/custom_action_button.dart';
+import '../../widgets/label_with_text.dart';
 
 class NurseManagementSection extends StatelessWidget {
   const NurseManagementSection({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(
           width: 1000,
           child: Column(
             children: [
-              SizedBox(
-                height: 60,
-              ),
+              const SizedBox(height: 60),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  const Text(
                     'Home Nurse Management',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   CustomActionButton(
-                      label: 'Add Nurse',
-                      iconData: Icons.add_circle_outline,
-                      color: Colors.green,
-                      onPressed: () {}),
+                    label: 'Add Nurse',
+                    iconData: Icons.add_circle_outline,
+                    color: Colors.green,
+                    onPressed: () {},
+                  ),
                 ],
               ),
-              SizedBox(
-                height: 20,
-              ),
-              Material(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(15),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 20,
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Pooja Haridas',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(
-                            width: 200,
-                          ),
-                          IconButton(
-                            onPressed: () {},
-                            icon: Icon(
-                              Icons.delete,
-                              color: Colors.red,
-                              size: 20,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Row(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Phone No',
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 10,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 2,
-                              ),
-                              Text('9990090909'),
-                            ],
-                          ),
-                          SizedBox(width: 168),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'DOB',
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 10,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 2,
-                              ),
-                              Text('12/12/2022'),
-                            ],
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Email',
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 10,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 2,
-                              ),
-                              Text('someemail@gmail.com'),
-                            ],
-                          ),
-                          SizedBox(width: 100),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Address',
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 10,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 2,
-                              ),
-                              Text(
-                                  'Abc house,P.O.Morazha via Mottammal,Kannur'),
-                            ],
-                          )
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Gender',
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 10,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 2,
-                              ),
-                              Text('F'),
-                            ],
-                          ),
-                          SizedBox(width: 215),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Qualification',
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 10,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 2,
-                              ),
-                              Text('SSLC,PLUS TWO,BSc Nursing'),
-                            ],
-                          )
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Experience',
-                                style:
-                                    TextStyle(color: Colors.grey, fontSize: 10),
-                              ),
-                              SizedBox(height: 2),
-                              Text('1 year(General)'),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              CustomActionButton(
-                                  label: 'Edit',
-                                  iconData: Icons.edit,
-                                  color: Colors.green,
-                                  onPressed: () {}),
-                              SizedBox(width: 10),
-                              CustomActionButton(
-                                  label: 'Block',
-                                  iconData: Icons.block,
-                                  color: Colors.red,
-                                  onPressed: () {}),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+              const SizedBox(height: 20),
+              const Divider(height: 1),
+              Expanded(
+                child: ListView.separated(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  itemBuilder: (context, index) => NurseCard(),
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(height: 10),
+                  itemCount: 10,
                 ),
               ),
             ],
           ),
         ),
       ],
+    );
+  }
+}
+
+class NurseCard extends StatelessWidget {
+  const NurseCard({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(15),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 20,
+        ),
+        child: Column(
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '#13424124',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        'Pooja Haridas',
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
+                      ),
+                      const SizedBox(height: 5),
+                      Text(
+                        '20 Female',
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.bold, color: Colors.black54),
+                      ),
+                    ],
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(
+                    Icons.delete,
+                    color: Colors.red,
+                    size: 20,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Row(
+              children: const [
+                Expanded(
+                  child: LabelWithText(
+                    label: 'Phone',
+                    text: '98872346728',
+                  ),
+                ),
+                Expanded(
+                  child: LabelWithText(
+                    label: 'Date of Birth',
+                    text: '12/12/1990',
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Row(
+              children: const [
+                Expanded(
+                  child: LabelWithText(
+                    label: 'Email',
+                    text: 'someemail@gmail.com',
+                  ),
+                ),
+                Expanded(
+                  child: LabelWithText(
+                    label: 'Address',
+                    text: 'Abc house,P.O.Morazha via Mottammal,Kannur',
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Row(
+              children: const [
+                Expanded(
+                  child: LabelWithText(
+                    label: 'Gender',
+                    text: 'Female',
+                  ),
+                ),
+                Expanded(
+                  child: LabelWithText(
+                    label: 'Qualification',
+                    text: 'SSLC,PLUS TWO,BSc Nursing',
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const LabelWithText(
+                  label: 'Experience',
+                  text: '1 Year(General)',
+                ),
+                Row(
+                  children: [
+                    CustomActionButton(
+                      label: 'Edit',
+                      iconData: Icons.edit,
+                      color: Colors.orange,
+                      onPressed: () {},
+                    ),
+                    const SizedBox(width: 10),
+                    CustomActionButton(
+                      label: 'Block',
+                      iconData: Icons.block,
+                      color: Colors.red,
+                      onPressed: () {},
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

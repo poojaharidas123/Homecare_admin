@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:homecare_admin/ui/widgets/dashcard.dart';
 
 class DashboardSection extends StatelessWidget {
   const DashboardSection({super.key});
@@ -19,7 +20,7 @@ class DashboardSection extends StatelessWidget {
                 SizedBox(height: 60),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
+                  children: const [
                     Text(
                       'Dashboard',
                       style: TextStyle(
@@ -28,107 +29,15 @@ class DashboardSection extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Row(
                   children: [
-                    Material(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 15),
-                        child: Row(
-                          children: [
-                            Column(
-                              children: [
-                                Icon(
-                                  Icons.masks_rounded,
-                                  size: 40,
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                      '10',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 30,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 3),
-                                Row(
-                                  children: [
-                                    Text(
-                                      'Home Nurses',
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 10),
-                    Material(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
-                      child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 15),
-                          child: Row(
-                            children: [
-                              Column(
-                                children: [
-                                  (Icon(
-                                    Icons.people_alt_rounded,
-                                    size: 35,
-                                  )),
-                                ],
-                              ),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Text(
-                                        '90',
-                                        style: TextStyle(
-                                            fontSize: 30,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 3),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        'Users',
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ],
-                          )),
+                    DashCard(
+                      label: 'label',
+                      value: '100',
+                      iconData: Icons.masks_outlined,
                     )
                   ],
                 )

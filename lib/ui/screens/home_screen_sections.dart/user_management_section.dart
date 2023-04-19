@@ -1,156 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:homecare_admin/ui/widgets/custom_card.dart';
+
+import '../../widgets/label_with_text.dart';
 
 class UserManagementSection extends StatelessWidget {
   const UserManagementSection({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(
           width: 1000,
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 60,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
-                children: [
+                children: const [
                   Text(
-                    "User Management",
+                    "Patient Management",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
-              Material(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(15),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 20,
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'user',
-                                style:
-                                    TextStyle(color: Colors.grey, fontSize: 10),
-                              ),
-                              Text(
-                                '#UserId',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Patient',
-                                style:
-                                    TextStyle(color: Colors.grey, fontSize: 10),
-                              ),
-                              Text(
-                                'Krithya M P',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                          IconButton(
-                            onPressed: () {},
-                            icon: Icon(
-                              Icons.delete,
-                              color: Colors.red,
-                              size: 20,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            'Phone No',
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 10,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 2),
-                      Row(
-                        children: [Text('9990090909')],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            'Email',
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 10,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 2),
-                      Row(
-                        children: [Text('someemail@gmail.com')],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            'Address',
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 10,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 2),
-                      Row(
-                        children: [
-                          Text('xyz house,P.O Pallikkunnu,Kannur'),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Align(
-                        alignment: Alignment.bottomRight,
-                        child: CustomActionButton(
-                          label: "Block",
-                          iconData: Icons.block,
-                          color: Colors.red,
-                          onPressed: () {},
-                        ),
-                      ),
-                    ],
+              const Divider(height: 1),
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  child: Wrap(
+                    spacing: 10,
+                    runSpacing: 10,
+                    children: List.generate(
+                      10,
+                      (index) => const UserCard(),
+                    ),
                   ),
                 ),
               ),
@@ -162,47 +52,115 @@ class UserManagementSection extends StatelessWidget {
   }
 }
 
-class CustomActionButton extends StatelessWidget {
-  final String label;
-  final IconData iconData;
-  final Color color;
-  final Function() onPressed;
-  const CustomActionButton({
-    Key? key,
-    required this.label,
-    required this.iconData,
-    required this.color,
-    required this.onPressed,
-  }) : super(key: key);
+class UserCard extends StatelessWidget {
+  const UserCard({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: color.withOpacity(.2),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(45),
-        side: BorderSide(
-          color: color,
-        ),
-      ),
-      child: InkWell(
-        onTap: onPressed,
-        borderRadius: BorderRadius.circular(45),
+    return CustomCard(
+      child: SizedBox(
+        width: 320,
         child: Padding(
           padding: const EdgeInsets.symmetric(
-            horizontal: 15,
-            vertical: 10,
+            horizontal: 20,
+            vertical: 20,
           ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(iconData, color: color, size: 15),
-              const SizedBox(
-                width: 5,
-              ),
               Text(
-                label,
-                style: TextStyle(color: color),
+                '#UserId',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                'Krithya M P',
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+              const SizedBox(height: 5),
+              Text(
+                '20 Female',
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.bold, color: Colors.black54),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              const LabelWithText(
+                label: 'Phone No',
+                text: '9876765654',
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const LabelWithText(
+                label: 'Email',
+                text: 'someemail@gmail.com',
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const LabelWithText(
+                label: 'Address',
+                text: 'Xyz house, P.O Pallikkunnu,Kannur',
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const LabelWithText(
+                label: 'Conditions',
+                text: 'Some Conditions',
+              ),
+              const Divider(height: 30),
+              const Text(
+                'Medications',
+                style: TextStyle(color: Colors.grey, fontSize: 10),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Some Medication',
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  Text(
+                    '0-1-0-0',
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Some Medication',
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  Text(
+                    '0-1-0-0',
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                ],
               ),
             ],
           ),

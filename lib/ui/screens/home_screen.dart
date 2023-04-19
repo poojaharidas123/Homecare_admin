@@ -6,6 +6,10 @@ import 'package:homecare_admin/ui/screens/home_screen_sections.dart/feedback_sec
 import 'package:homecare_admin/ui/screens/home_screen_sections.dart/user_management_section.dart';
 import 'package:homecare_admin/ui/screens/home_screen_sections.dart/complaint_section.dart';
 import 'package:homecare_admin/ui/screens/home_screen_sections.dart/dashboard_section.dart';
+import 'package:homecare_admin/ui/widgets/custom_card.dart';
+import 'package:homecare_admin/values/values.dart';
+
+import '../widgets/drawer_button.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -22,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen>
   void initState() {
     tabController = TabController(
       length: 7,
-      initialIndex: 0,
+      initialIndex: 3,
       vsync: this,
     );
     super.initState();
@@ -32,29 +36,30 @@ class _HomeScreenState extends State<HomeScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFFAAD013),
+        elevation: 1,
+        backgroundColor: primaryColor,
         iconTheme: const IconThemeData(
           color: Colors.white,
         ),
-        title: const Text("Home Screen"),
+        title: const Text("HomeCare"),
       ),
       body: TabBarView(
         controller: tabController,
         physics: const NeverScrollableScrollPhysics(),
-        children: [
-          const DashboardSection(),
-          const UserManagementSection(),
-          const NurseManagementSection(),
-          const NurseRequestSection(),
-          const PaymentSection(),
-          const FeedbackSection(),
-          const ComplaintSection(),
+        children: const [
+          DashboardSection(),
+          UserManagementSection(),
+          NurseManagementSection(),
+          NurseRequestSection(),
+          PaymentSection(),
+          FeedbackSection(),
+          ComplaintSection(),
         ],
       ),
       drawer: SizedBox(
         width: 300,
         child: Material(
-          color: Color(0xFFAAD013),
+          color: primaryColor,
           child: Column(
             children: [
               const SizedBox(
@@ -155,49 +160,6 @@ class _HomeScreenState extends State<HomeScreen>
                 height: 10,
               ),
             ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class CustomDrawerButton extends StatelessWidget {
-  final String label;
-  final Function() onTap;
-  final bool isSelected;
-  const CustomDrawerButton({
-    Key? key,
-    required this.label,
-    required this.onTap,
-    this.isSelected = false,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Material(
-        color: isSelected ? Colors.white : Color(0xFFAAD013),
-        borderRadius: BorderRadius.circular(30),
-        child: InkWell(
-          onTap: isSelected ? null : onTap,
-          borderRadius: BorderRadius.circular(30),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20,
-              vertical: 15,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  label,
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      color: isSelected ? Color(0xFFAAD013) : Colors.white),
-                ),
-              ],
-            ),
           ),
         ),
       ),
