@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:homecare_admin/values/values.dart';
 
 import 'custom_card.dart';
 
@@ -39,17 +40,12 @@ class _CustomSearchState extends State<CustomSearch> {
               controller: _searchController,
               obscureText: false,
               decoration: const InputDecoration(
-                contentPadding: EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 10,
-                ),
-                border: InputBorder.none,
                 hintText: 'Search',
               ),
             ),
           ),
-          const SizedBox(
-            width: 15,
+          SizedBox(
+            width: _lastValue.isNotEmpty ? 15 : 0,
           ),
           _searchController.text.trim().isNotEmpty
               ? IconButton(
@@ -64,12 +60,12 @@ class _CustomSearchState extends State<CustomSearch> {
                   },
                   icon: const Icon(
                     Icons.search,
-                    color: Colors.blue,
+                    color: primaryColor,
                   ),
                 )
               : const SizedBox(),
-          const SizedBox(
-            width: 15,
+          SizedBox(
+            width: _lastValue.isNotEmpty ? 15 : 0,
           ),
           _lastValue.isNotEmpty
               ? IconButton(

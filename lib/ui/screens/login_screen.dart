@@ -99,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           TextFormField(
                             controller: _emailController,
-                            validator: validateEmail,
+                            validator: emailValidator,
                             decoration: const InputDecoration(
                               hintText: 'Email',
                               prefixIcon: Icon(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:homecare_admin/values/values.dart';
 
 class CustomRadioButton extends StatelessWidget {
   final String label;
@@ -14,10 +15,10 @@ class CustomRadioButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      borderRadius: BorderRadius.circular(10),
+      borderRadius: BorderRadius.circular(30),
       child: InkWell(
         onTap: onPressed,
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(30),
         child: Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: 15,
@@ -29,7 +30,7 @@ class CustomRadioButton extends StatelessWidget {
                 isSelected
                     ? Icons.radio_button_checked
                     : Icons.radio_button_off,
-                color: isSelected ? Colors.blue : Colors.black54,
+                color: isSelected ? primaryColor : Colors.black54,
               ),
               const SizedBox(width: 5),
               Text(
