@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:homecare_admin/values/values.dart';
 
 import 'custom_button.dart';
 
@@ -88,6 +89,8 @@ class CustomAlertDialog extends StatelessWidget {
                           ? Expanded(
                               child: CustomButton(
                                 label: secondaryButtonLabel ?? '',
+                                buttonColor: secondaryColor,
+                                textColor: primaryColor,
                                 onPressed: secondaryOnPressed ??
                                     () {
                                       Navigator.pop(context);
@@ -104,7 +107,7 @@ class CustomAlertDialog extends StatelessWidget {
                           ? Expanded(
                               child: CustomButton(
                                 label: primaryButtonLabel ?? '',
-                                buttonColor: Colors.blue,
+                                buttonColor: primaryColor,
                                 onPressed: primaryOnPressed ??
                                     () {
                                       Navigator.pop(context);

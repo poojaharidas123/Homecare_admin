@@ -1,8 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:homecare_admin/ui/screens/home_screen.dart';
+import 'package:homecare_admin/ui/screens/login_screen.dart';
 import 'package:homecare_admin/values/values.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-void main() {
+void main() async {
+  await Supabase.initialize(
+    url: 'https://gjjjonnhnpplkfatnabs.supabase.co',
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdqampvbm5obnBwbGtmYXRuYWJzIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY4MTkyMzM0NCwiZXhwIjoxOTk3NDk5MzQ0fQ.ZGBX6YVdK8vdQjtCqnrcOgJ6O6hu38dN0l1DM4piUEg',
+  );
+  // await Supabase.instance.client.auth.admin.createUser(
+  //   AdminUserAttributes(
+  //       email: 'admin@homecare.com',
+  //       password: 'password',
+  //       emailConfirm: true,
+  //       userMetadata: {
+  //         'isAdmin': true,
+  //       }),
+  // );
   runApp(const MyApp());
 }
 
@@ -24,19 +39,24 @@ class MyApp extends StatelessWidget {
             color: Colors.black,
           ),
         ),
-        inputDecorationTheme: ThemeData.light().inputDecorationTheme.copyWith(
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 15,
-                vertical: 10,
-              ),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30),
-                borderSide: BorderSide.none,
-              ),
-            ),
+        inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: Colors.white,
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 15,
+          ),
+          iconColor: primaryColor,
+          prefixIconColor: primaryColor,
+          suffixIconColor: primaryColor,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30),
+            borderSide: BorderSide.none,
+          ),
+        ),
         scaffoldBackgroundColor: secondaryColor,
       ),
-      home: const HomeScreen(),
+      home: const LoginScreen(),
     );
   }
 }
