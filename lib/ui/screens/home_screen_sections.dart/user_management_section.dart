@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:homecare_admin/ui/widgets/custom_card.dart';
 
+import '../../widgets/custom_search.dart';
 import '../../widgets/label_with_text.dart';
 
 class UserManagementSection extends StatelessWidget {
@@ -22,8 +23,20 @@ class UserManagementSection extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: const [
                   Text(
-                    "Patient Management",
+                    "User Management",
                     style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: CustomSearch(
+                      onSearch: (query) {},
+                    ),
                   ),
                 ],
               ),

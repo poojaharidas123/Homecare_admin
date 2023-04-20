@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../widgets/custom_action_button.dart';
+import '../../widgets/custom_search.dart';
 import '../../widgets/label_with_text.dart';
 
 class NurseManagementSection extends StatelessWidget {
@@ -31,7 +32,21 @@ class NurseManagementSection extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
+              const SizedBox(
+                height: 20,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: CustomSearch(
+                      onSearch: (query) {},
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 20,
+              ),
               const Divider(height: 1),
               Expanded(
                 child: ListView.separated(

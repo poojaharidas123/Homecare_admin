@@ -37,7 +37,7 @@ class DashboardSection extends StatelessWidget {
                 Wrap(
                   spacing: 20,
                   runSpacing: 20,
-                  children: [
+                  children: const [
                     DashCard(
                       label: 'Nurse Bookings',
                       value: '2345',
