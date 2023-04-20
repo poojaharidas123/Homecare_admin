@@ -1,200 +1,138 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:homecare_admin/ui/widgets/custom_button.dart';
+import 'package:homecare_admin/ui/widgets/custom_card.dart';
+import 'package:homecare_admin/ui/widgets/label_with_text.dart';
 
 class ComplaintSection extends StatelessWidget {
   const ComplaintSection({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(
           width: 1000,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 60,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Complaint',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ],
+              const Text(
+                'Complaints',
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
-              SizedBox(
-                height: 20,
+              const SizedBox(
+                height: 10,
               ),
-              Row(
-                children: [
-                  SizedBox(
-                    width: 100,
-                    child: Material(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
-                      child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 15),
-                          child: Center(
-                              child: Text(
-                            'Nurse',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ))),
-                    ),
+              CupertinoSlidingSegmentedControl<String>(
+                groupValue: 'nurse',
+                children: {
+                  'nurse': Text(
+                    'Nurse',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
-                  SizedBox(width: 30),
-                  SizedBox(
-                    width: 100,
-                    child: Material(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
-                      child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 15),
-                          child: Center(
-                              child: Text(
-                            'User',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ))),
-                    ),
+                  'user': Text(
+                    'User',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
-                ],
+                },
+                onValueChanged: (status) {},
               ),
-              SizedBox(height: 20),
-              SizedBox(
-                width: 1000,
-                child: Material(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(15),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 20,
-                    ),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Material(
-                              color: Colors.white,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 20),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'user',
-                                              style:
-                                                  TextStyle(color: Colors.grey),
-                                            ),
-                                            Text(
-                                              '#UserId',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(width: 100),
-                                        Text(
-                                          'User Name',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'patient',
-                                              style:
-                                                  TextStyle(color: Colors.grey),
-                                            ),
-                                            Text(
-                                              '#PatientId',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(width: 84),
-                                        Text(
-                                          'Patient Name',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 10),
-                                    Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'nurse',
-                                              style:
-                                                  TextStyle(color: Colors.grey),
-                                            ),
-                                            Text(
-                                              '#NurseId',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(width: 92),
-                                        Text(
-                                          'Nurse Name',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                    Row(
-                                      children: [
-                                        Text('xbvxb'),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Divider(height: 1),
+              Expanded(
+                child: ListView.separated(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  itemBuilder: (context, index) => ComplaintCard(),
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(height: 10),
+                  itemCount: 10,
                 ),
               ),
             ],
           ),
         ),
       ],
+    );
+  }
+}
+
+class ComplaintCard extends StatelessWidget {
+  const ComplaintCard({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomCard(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 20,
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        '#345353',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey,
+                            ),
+                      ),
+                      Text(
+                        '12/12/2023',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey,
+                            ),
+                      ),
+                    ],
+                  ),
+                  const Divider(height: 20),
+                  Text(
+                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec tortor sit amet magna luctus euismod. Fusce vel ligula sed nibh ultricies interdum. Quisque non dolor non mauris imperdiet malesuada. Nam molestie malesuada velit, nec rhoncus justo tempor eu. Suspendisse potenti. Duis pulvinar fringilla purus eu convallis. Sed malesuada sapien quis felis commodo varius. ',
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: Colors.black,
+                        ),
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: 200,
+                        child: CustomButton(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 10,
+                          ),
+                          label: 'View Booking Details',
+                          onPressed: () {},
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

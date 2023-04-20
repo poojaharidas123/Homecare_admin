@@ -12,7 +12,11 @@ import 'package:homecare_admin/ui/widgets/label_with_text.dart';
 import 'package:homecare_admin/values/values.dart';
 
 class NurseRequestSection extends StatefulWidget {
-  const NurseRequestSection({super.key});
+  final bool fromDashboard;
+  const NurseRequestSection({
+    super.key,
+    this.fromDashboard = false,
+  });
 
   @override
   State<NurseRequestSection> createState() => _NurseRequestSectionState();
@@ -30,16 +34,19 @@ class _NurseRequestSectionState extends State<NurseRequestSection> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(
-                height: 60,
-              ),
-              const Text(
-                'Home Nurse Request Management',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
+              if (!widget.fromDashboard)
+                const SizedBox(
+                  height: 60,
+                ),
+              if (!widget.fromDashboard)
+                const Text(
+                  'Home Nurse Request Management',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              if (!widget.fromDashboard)
+                const SizedBox(
+                  height: 20,
+                ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -48,34 +55,38 @@ class _NurseRequestSectionState extends State<NurseRequestSection> {
                       onSearch: (query) {},
                     ),
                   ),
-                  const SizedBox(width: 20),
-                  CupertinoSlidingSegmentedControl<String>(
-                    groupValue: _selectedStatus,
-                    children: {
-                      'pending': Text(
-                        'Pending',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                      ),
-                      'active': Text(
-                        'Active',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                      ),
-                      'complete': Text(
-                        'Complete',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                      )
-                    },
-                    onValueChanged: (status) {
-                      _selectedStatus = status!;
-                      setState(() {});
-                    },
-                  ),
+                  if (!widget.fromDashboard) const SizedBox(width: 20),
+                  if (!widget.fromDashboard)
+                    CupertinoSlidingSegmentedControl<String>(
+                      groupValue: _selectedStatus,
+                      children: {
+                        'pending': Text(
+                          'Pending',
+                          style:
+                              Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                        ),
+                        'active': Text(
+                          'Active',
+                          style:
+                              Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                        ),
+                        'complete': Text(
+                          'Complete',
+                          style:
+                              Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                        )
+                      },
+                      onValueChanged: (status) {
+                        _selectedStatus = status!;
+                        setState(() {});
+                      },
+                    ),
                 ],
               ),
               const SizedBox(
