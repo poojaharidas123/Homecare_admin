@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:homecare_admin/ui/widgets/custom_action_button.dart';
+import 'package:homecare_admin/ui/widgets/custom_card.dart';
+import 'package:homecare_admin/ui/widgets/label_with_text.dart';
 
 class PaymentSection extends StatelessWidget {
   const PaymentSection({super.key});
@@ -25,128 +27,82 @@ class PaymentSection extends StatelessWidget {
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               const SizedBox(
-                height: 10,
-              ),
-              CupertinoSlidingSegmentedControl<String>(
-                groupValue: 'pending',
-                children: {
-                  'pending': Text(
-                    'Pending',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                  'paid': Text(
-                    'Paid',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                },
-                onValueChanged: (status) {},
-              ),
-              const SizedBox(
-                height: 10,
+                height: 20,
               ),
               const Divider(height: 1),
-              Material(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(15),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 20,
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Column(
-                            children: [
-                              Text(
-                                'User',
-                                style:
-                                    TextStyle(color: Colors.grey, fontSize: 10),
-                              ),
-                              SizedBox(height: 3),
-                              Text(
-                                '#id',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            width: 238,
-                          ),
-                          Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Nurse',
-                                  style: TextStyle(
-                                      color: Colors.grey, fontSize: 10),
-                                ),
-                                SizedBox(height: 3),
-                                Text(
-                                  'Pooja Haridas',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                              ]),
-                          SizedBox(width: 550),
-                          Text(
-                            'Pending',
-                            style: TextStyle(
-                              color: Color(0xFFAAD013),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 20),
-                      Row(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Date Range',
-                                style:
-                                    TextStyle(color: Colors.grey, fontSize: 10),
-                              ),
-                              SizedBox(height: 3),
-                              Text(
-                                '14/11/2022 - 31/03/2023',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            width: 100,
-                          ),
-                          Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Salary',
-                                  style: TextStyle(
-                                      color: Colors.grey, fontSize: 10),
-                                ),
-                                SizedBox(height: 3),
-                                Text(
-                                  '15,000',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                              ]),
-                        ],
-                      ),
-                    ],
-                  ),
+              Expanded(
+                child: ListView.separated(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  itemBuilder: (context, index) => PaymentCard(),
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(height: 10),
+                  itemCount: 10,
                 ),
               ),
             ],
           ),
         ),
       ],
+    );
+  }
+}
+
+class PaymentCard extends StatelessWidget {
+  const PaymentCard({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomCard(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 20,
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '#13424124',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  const SizedBox(height: 15),
+                  const LabelWithText(
+                    label: 'Nurse Booking ID',
+                    text: '#1423123123',
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  const LabelWithText(
+                    label: 'Paid At',
+                    text: '12/12/2022 10:10 AM',
+                    alignment: CrossAxisAlignment.end,
+                  ),
+                  const SizedBox(height: 15),
+                  Text(
+                    '₹1000',
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.green,
+                        ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

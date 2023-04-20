@@ -2,16 +2,18 @@ import 'package:flutter/material.dart';
 
 class LabelWithText extends StatelessWidget {
   final String label, text;
+  final CrossAxisAlignment alignment;
   const LabelWithText({
     super.key,
     required this.label,
     required this.text,
+    this.alignment = CrossAxisAlignment.start,
   });
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: alignment,
       children: [
         Text(
           label,
