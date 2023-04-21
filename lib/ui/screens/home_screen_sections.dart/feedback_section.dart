@@ -1,41 +1,93 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:homecare_admin/blocs/suggestion/suggestion_bloc.dart';
 import 'package:homecare_admin/ui/widgets/custom_card.dart';
 import 'package:homecare_admin/ui/widgets/label_with_text.dart';
+import 'package:intl/intl.dart';
 
-class FeedbackSection extends StatelessWidget {
+import '../../widgets/custom_alert_dialog.dart';
+
+class FeedbackSection extends StatefulWidget {
   const FeedbackSection({super.key});
+
+  @override
+  State<FeedbackSection> createState() => _FeedbackSectionState();
+}
+
+class _FeedbackSectionState extends State<FeedbackSection> {
+  final SuggestionBloc suggestionBloc = SuggestionBloc();
+
+  @override
+  void initState() {
+    super.initState();
+    suggestionBloc.add(GetAllSuggestionEvent());
+  }
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        SizedBox(
-          width: 1000,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(
-                height: 60,
-              ),
-              const Text(
-                'Feedbacks',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              const Divider(height: 1),
-              Expanded(
-                child: ListView.separated(
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  itemBuilder: (context, index) => FeedbackCard(),
-                  separatorBuilder: (context, index) =>
-                      const SizedBox(height: 10),
-                  itemCount: 10,
+        BlocProvider<SuggestionBloc>.value(
+          value: suggestionBloc,
+          child: BlocConsumer<SuggestionBloc, SuggestionState>(
+            listener: (context, state) {
+              if (state is SuggestionFailureState) {
+                showDialog(
+                  context: context,
+                  builder: (context) => CustomAlertDialog(
+                    title: 'Failure',
+                    message: state.message,
+                    primaryButtonLabel: 'Retry',
+                    primaryOnPressed: () {
+                      suggestionBloc.add(GetAllSuggestionEvent());
+                    },
+                  ),
+                );
+              }
+            },
+            builder: (context, state) {
+              return SizedBox(
+                width: 1000,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 60,
+                    ),
+                    const Text(
+                      'Feedbacks',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const Divider(height: 1),
+                    Expanded(
+                      child: state is SuggestionSuccessState
+                          ? state.suggestions.isNotEmpty
+                              ? ListView.separated(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 20),
+                                  itemBuilder: (context, index) => FeedbackCard(
+                                    feedbackDetails: state.suggestions[index],
+                                  ),
+                                  separatorBuilder: (context, index) =>
+                                      const SizedBox(height: 10),
+                                  itemCount: state.suggestions.length,
+                                )
+                              : const Center(
+                                  child: Text('No Feedbacks Found'),
+                                )
+                          : const Center(
+                              child: CupertinoActivityIndicator(),
+                            ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
+              );
+            },
           ),
         ),
       ],
@@ -44,8 +96,10 @@ class FeedbackSection extends StatelessWidget {
 }
 
 class FeedbackCard extends StatelessWidget {
+  final dynamic feedbackDetails;
   const FeedbackCard({
     super.key,
+    required this.feedbackDetails,
   });
 
   @override
@@ -66,14 +120,15 @@ class FeedbackCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        '#345353',
+                        '#${feedbackDetails['id']}',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                               fontWeight: FontWeight.bold,
                               color: Colors.grey,
                             ),
                       ),
                       Text(
-                        '12/12/2023',
+                        DateFormat('dd/MM/yyyy hh:mm a').format(
+                            DateTime.parse(feedbackDetails['created_at'])),
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                               fontWeight: FontWeight.bold,
                               color: Colors.grey,
@@ -83,7 +138,7 @@ class FeedbackCard extends StatelessWidget {
                   ),
                   const Divider(height: 20),
                   Text(
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec tortor sit amet magna luctus euismod. Fusce vel ligula sed nibh ultricies interdum. Quisque non dolor non mauris imperdiet malesuada. Nam molestie malesuada velit, nec rhoncus justo tempor eu. Suspendisse potenti. Duis pulvinar fringilla purus eu convallis. Sed malesuada sapien quis felis commodo varius. ',
+                    feedbackDetails['suggestion'],
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                           color: Colors.black,
                         ),

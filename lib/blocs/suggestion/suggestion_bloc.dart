@@ -14,10 +14,7 @@ class SuggestionBloc extends Bloc<SuggestionEvent, SuggestionState> {
       SupabaseQueryBuilder queryTable = supabaseClient.from('suggestions');
       try {
         if (event is GetAllSuggestionEvent) {
-          List<dynamic> temp = await queryTable
-              .select()
-              .eq('user_id', supabaseClient.auth.currentUser!.id)
-              .order(
+          List<dynamic> temp = await queryTable.select().order(
                 'created_at',
               );
 
