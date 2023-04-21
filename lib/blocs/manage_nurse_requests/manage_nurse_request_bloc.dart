@@ -85,13 +85,12 @@ class ManageNurseRequestBloc
           );
           add(GetAllNurseRequestEvent(status: 'active'));
         } else if (event is RejectNurseRequestEvent) {
-          await nurseRequestsTable.insert(
+          await nurseRequestsTable.update(
             {
-              'nurse_request_id': event.requestId,
               'reason': event.reason,
               'status': 'rejected',
             },
-          );
+          ).eq('id', event.requestId);
           add(GetAllNurseRequestEvent(status: 'active'));
         }
       } catch (e, s) {
