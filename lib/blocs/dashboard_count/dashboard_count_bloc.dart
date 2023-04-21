@@ -16,9 +16,6 @@ class DashboardCountBloc
       try {
         dynamic temp = await Supabase.instance.client.rpc(
           'dashboard_count',
-          params: {
-            'search_date': DateFormat('yyyy-MM-dd').format(DateTime.now()),
-          },
         );
 
         Map<String, dynamic> dashbordCount = temp as Map<String, dynamic>;
