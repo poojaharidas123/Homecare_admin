@@ -13,7 +13,11 @@ import '../../widgets/custom_search.dart';
 import '../../widgets/label_with_text.dart';
 
 class NurseManagementSection extends StatefulWidget {
-  const NurseManagementSection({super.key});
+  final Function(dynamic)? onSelect;
+  const NurseManagementSection({
+    super.key,
+    this.onSelect,
+  });
 
   @override
   State<NurseManagementSection> createState() => _NurseManagementSectionState();
@@ -112,6 +116,12 @@ class _NurseManagementSectionState extends State<NurseManagementSection> {
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 20),
                                   itemBuilder: (context, index) => NurseCard(
+                                    onSelect: widget.onSelect != null
+                                        ? () {
+                                            widget.onSelect!
+                                                .call(state.nurses[index]);
+                                          }
+                                        : null,
                                     nurseBloc: nurseBloc,
                                     nurseDetails: state.nurses[index],
                                   ),
@@ -417,10 +427,12 @@ class _AddNurseFormState extends State<AddNurseForm> {
 class NurseCard extends StatelessWidget {
   final Map<String, dynamic> nurseDetails;
   final NurseBloc nurseBloc;
+  final Function()? onSelect;
   const NurseCard({
     super.key,
     required this.nurseDetails,
     required this.nurseBloc,
+    this.onSelect,
   });
 
   @override
@@ -545,6 +557,14 @@ class NurseCard extends StatelessWidget {
                 ),
                 Row(
                   children: [
+                    if (onSelect != null)
+                      CustomActionButton(
+                        label: 'Select',
+                        iconData: Icons.done,
+                        color: Colors.blue,
+                        onPressed: onSelect!,
+                      ),
+                    if (onSelect != null) const SizedBox(width: 10),
                     CustomActionButton(
                       label: 'Edit',
                       iconData: Icons.edit,

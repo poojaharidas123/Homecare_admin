@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:meta/meta.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:homecare_admin/util/iterable_extension.dart';
 
 part 'manage_nurse_request_event.dart';
 part 'manage_nurse_request_state.dart';
@@ -27,7 +28,27 @@ class ManageNurseRequestBloc
             },
           );
 
-          emit(ManageNurseRequestSuccessState(requests: nurseRequests));
+          List<User> users =
+              await supabaseClient.auth.admin.listUsers(perPage: 1000);
+
+          List<dynamic> modifiedNurseRequests = [];
+
+          for (int i = 0; i < nurseRequests.length; i++) {
+            dynamic tempItem = nurseRequests[i];
+
+            if (tempItem['assigned_nurse']['name'] != null) {
+              User? user = users.firstOrNull(
+                  (user) => user.id == tempItem['assigned_nurse']['user_id']);
+
+              tempItem['assigned_nurse']['status'] =
+                  user != null ? user.userMetadata!['status'] : '';
+              tempItem['assigned_nurse']['email'] =
+                  user != null ? user.email : '';
+            }
+            modifiedNurseRequests.add(tempItem);
+          }
+          Logger().w(modifiedNurseRequests);
+          emit(ManageNurseRequestSuccessState(requests: modifiedNurseRequests));
         } else if (event is AddNurseRequestEvent) {
           await nurseRequestsTable.insert(
             {
@@ -43,11 +64,32 @@ class ManageNurseRequestBloc
         } else if (event is DeleteNurseRequestEvent) {
           await nurseRequestsTable.delete().eq('id', event.requestId);
           add(GetAllNurseRequestEvent());
+        } else if (event is AssignNurseRequestEvent) {
+          await supabaseClient.from('nurse_assign_requests').insert({
+            'nurse_request_id': event.requestId,
+            'nurse_id': event.nurseId,
+          });
+          add(GetAllNurseRequestEvent());
+        } else if (event is DeleteAssignNurseRequestEvent) {
+          await supabaseClient
+              .from('nurse_assign_requests')
+              .delete()
+              .eq('id', event.assignNurseRequestId);
+          add(GetAllNurseRequestEvent());
         } else if (event is PayNurseRequestEvent) {
           await paymentTable.insert(
             {
               'nurse_request_id': event.requestId,
               'amount': event.amount,
+            },
+          );
+          add(GetAllNurseRequestEvent(status: 'active'));
+        } else if (event is RejectNurseRequestEvent) {
+          await nurseRequestsTable.insert(
+            {
+              'nurse_request_id': event.requestId,
+              'reason': event.reason,
+              'status': 'rejected',
             },
           );
           add(GetAllNurseRequestEvent(status: 'active'));

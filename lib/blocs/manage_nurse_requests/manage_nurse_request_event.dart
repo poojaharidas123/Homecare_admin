@@ -33,11 +33,39 @@ class DeleteNurseRequestEvent extends ManageNurseRequestEvent {
   });
 }
 
+class DeleteAssignNurseRequestEvent extends ManageNurseRequestEvent {
+  final int assignNurseRequestId;
+
+  DeleteAssignNurseRequestEvent({
+    required this.assignNurseRequestId,
+  });
+}
+
+class AssignNurseRequestEvent extends ManageNurseRequestEvent {
+  final int requestId;
+  final String nurseId;
+
+  AssignNurseRequestEvent({
+    required this.requestId,
+    required this.nurseId,
+  });
+}
+
 class PayNurseRequestEvent extends ManageNurseRequestEvent {
   final int requestId, amount;
 
   PayNurseRequestEvent({
     required this.requestId,
     required this.amount,
+  });
+}
+
+class RejectNurseRequestEvent extends ManageNurseRequestEvent {
+  final int requestId;
+  final String reason;
+
+  RejectNurseRequestEvent({
+    required this.requestId,
+    required this.reason,
   });
 }

@@ -6,9 +6,13 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:homecare_admin/blocs/manage_nurse_requests/manage_nurse_request_bloc.dart';
+import 'package:homecare_admin/blocs/nurse/nurse_bloc.dart';
+import 'package:homecare_admin/ui/screens/home_screen_sections.dart/nurse_management_section.dart';
 import 'package:homecare_admin/ui/screens/home_screen_sections.dart/user_management_section.dart';
+import 'package:homecare_admin/ui/screens/select_nurse_screen.dart';
 import 'package:homecare_admin/ui/widgets/custom_button.dart';
 import 'package:homecare_admin/ui/widgets/custom_card.dart';
+import 'package:homecare_admin/ui/widgets/custom_patient_card.dart';
 import 'package:homecare_admin/ui/widgets/custom_search.dart';
 import 'package:homecare_admin/ui/widgets/label_with_text.dart';
 import 'package:homecare_admin/util/get_age.dart';
@@ -16,6 +20,7 @@ import 'package:homecare_admin/util/postgres_time_to_time_of_day.dart';
 import 'package:homecare_admin/values/values.dart';
 import 'package:intl/intl.dart';
 
+import '../../../util/value_validators.dart';
 import '../../widgets/custom_alert_dialog.dart';
 
 class NurseRequestSection extends StatefulWidget {
@@ -157,6 +162,8 @@ class _NurseRequestSectionState extends State<NurseRequestSection> {
                                       const EdgeInsets.symmetric(vertical: 20),
                                   itemBuilder: (context, index) =>
                                       NurseRequestCard(
+                                    manageNurseRequestBloc:
+                                        manageNurseRequestBloc,
                                     nurseRequestDetails: state.requests[index],
                                   ),
                                   separatorBuilder: (context, index) =>
@@ -182,9 +189,11 @@ class _NurseRequestSectionState extends State<NurseRequestSection> {
 
 class NurseRequestCard extends StatelessWidget {
   final dynamic nurseRequestDetails;
+  final ManageNurseRequestBloc manageNurseRequestBloc;
   const NurseRequestCard({
     super.key,
     required this.nurseRequestDetails,
+    required this.manageNurseRequestBloc,
   });
 
   @override
@@ -201,14 +210,16 @@ class NurseRequestCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  '#${nurseRequestDetails['id'].toString()}',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                Expanded(
+                  child: Text(
+                    '#${nurseRequestDetails['id'].toString()}',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
                 ),
                 Text(
                   nurseRequestDetails['status'],
@@ -216,6 +227,26 @@ class NurseRequestCard extends StatelessWidget {
                         color: primaryColor,
                       ),
                 ),
+                if (nurseRequestDetails['status'] == 'pending')
+                  const SizedBox(width: 10),
+                if (nurseRequestDetails['status'] == 'pending')
+                  TextButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => ReasonForm(
+                          manageNurseRequestBloc: manageNurseRequestBloc,
+                          requestId: nurseRequestDetails['id'],
+                        ),
+                      );
+                    },
+                    child: Text(
+                      'Reject Request',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: Colors.red,
+                          ),
+                    ),
+                  ),
               ],
             ),
             const SizedBox(
@@ -240,6 +271,33 @@ class NurseRequestCard extends StatelessWidget {
                           fontWeight: FontWeight.bold, color: Colors.black54),
                     ),
                   ],
+                ),
+                const SizedBox(
+                  width: 20,
+                ),
+                TextButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => Dialog(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30)),
+                        insetPadding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 20,
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            PatientCard(
+                              patientDetails: nurseRequestDetails['patient'],
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                  child: const Text('View Details'),
                 ),
               ],
             ),
@@ -266,10 +324,26 @@ class NurseRequestCard extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      TextButton(
-                        child: const Text('Assigned Nurse'),
-                        onPressed: () {},
-                      ),
+                      if (nurseRequestDetails['status'] == 'pending')
+                        TextButton(
+                          child: const Text('Request Nurse'),
+                          onPressed: () async {
+                            dynamic nurse = await Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => const SelectNurseScreen(),
+                              ),
+                            );
+
+                            if (nurse != null) {
+                              manageNurseRequestBloc.add(
+                                AssignNurseRequestEvent(
+                                  requestId: nurseRequestDetails['id'],
+                                  nurseId: nurse['user_id'],
+                                ),
+                              );
+                            }
+                          },
+                        ),
                     ],
                   ),
                 ),
@@ -295,12 +369,37 @@ class NurseRequestCard extends StatelessWidget {
                 Expanded(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      TextButton(
-                        child: const Text('View Assigned Nurse'),
-                        onPressed: () {},
-                      ),
-                    ],
+                    children: nurseRequestDetails['assigned_nurse']['name'] !=
+                            null
+                        ? [
+                            TextButton(
+                              child: const Text('View Assigned Nurse'),
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => Dialog(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(30)),
+                                    child: SizedBox(
+                                      width: 1000,
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          NurseCard(
+                                            nurseBloc: NurseBloc(),
+                                            nurseDetails: nurseRequestDetails[
+                                                'assigned_nurse'],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ]
+                        : [],
                   ),
                 ),
               ],
@@ -310,7 +409,7 @@ class NurseRequestCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
-                  'Assign Request',
+                  'Assign Requests',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -318,56 +417,146 @@ class NurseRequestCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 10),
-            Material(
-              color: Colors.blueGrey[50],
-              borderRadius: BorderRadius.circular(10),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 15,
-                  vertical: 10,
+            if (nurseRequestDetails['assign_requests'] != null &&
+                nurseRequestDetails['assign_requests'].isNotEmpty)
+              ListView.separated(
+                shrinkWrap: true,
+                itemBuilder: (context, index) => AssignRequestItem(
+                  assignRequestDetails: nurseRequestDetails['assign_requests']
+                      [index],
+                  manageNurseRequestBloc: manageNurseRequestBloc,
                 ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Pooja Haridas',
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleSmall
-                                ?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                          ),
-                          const SizedBox(height: 5),
-                          const Text('Reason'),
-                        ],
-                      ),
+                separatorBuilder: (context, index) =>
+                    const SizedBox(height: 10),
+                itemCount: nurseRequestDetails['assign_requests'].length,
+              )
+            else
+              const Center(
+                child: Text('No Assign Requests'),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class AssignRequestItem extends StatelessWidget {
+  final dynamic assignRequestDetails;
+  final ManageNurseRequestBloc manageNurseRequestBloc;
+  const AssignRequestItem({
+    super.key,
+    required this.assignRequestDetails,
+    required this.manageNurseRequestBloc,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.blueGrey[50],
+      borderRadius: BorderRadius.circular(10),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 15,
+          vertical: 10,
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    assignRequestDetails['nurse']['name'],
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  const SizedBox(height: 5),
+                  if (assignRequestDetails['reason'] != null)
+                    Text(
+                      assignRequestDetails['reason'],
                     ),
-                    const Text(
-                      'Pending',
-                      style: TextStyle(
-                        color: Color(0xFFAAD013),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.delete,
-                        color: Colors.red,
-                        size: 20,
-                      ),
-                    ),
-                  ],
-                ),
+                ],
+              ),
+            ),
+            Text(
+              assignRequestDetails['status'],
+              style: const TextStyle(
+                color: Color(0xFFAAD013),
+              ),
+            ),
+            const SizedBox(width: 10),
+            IconButton(
+              onPressed: () {
+                manageNurseRequestBloc.add(
+                  DeleteAssignNurseRequestEvent(
+                    assignNurseRequestId: assignRequestDetails['id'],
+                  ),
+                );
+              },
+              icon: const Icon(
+                Icons.delete,
+                color: Colors.red,
+                size: 20,
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class ReasonForm extends StatefulWidget {
+  final ManageNurseRequestBloc manageNurseRequestBloc;
+  final int requestId;
+  const ReasonForm({
+    super.key,
+    required this.manageNurseRequestBloc,
+    required this.requestId,
+  });
+
+  @override
+  State<ReasonForm> createState() => _ReasonFormState();
+}
+
+class _ReasonFormState extends State<ReasonForm> {
+  final TextEditingController reasonController = TextEditingController();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  @override
+  Widget build(BuildContext context) {
+    return CustomAlertDialog(
+      title: 'Reason',
+      message: 'Enter a reason to reject the request',
+      content: Form(
+        key: formKey,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        child: TextFormField(
+          controller: reasonController,
+          minLines: 3,
+          maxLines: 5,
+          validator: alphaNumericValidator,
+          decoration: const InputDecoration(
+            hintText: 'Reason',
+            prefixIcon: Icon(
+              Icons.receipt_outlined,
+            ),
+          ),
+        ),
+      ),
+      primaryButtonLabel: 'Reject',
+      primaryOnPressed: () {
+        if (formKey.currentState!.validate()) {
+          widget.manageNurseRequestBloc.add(
+            RejectNurseRequestEvent(
+              requestId: widget.requestId,
+              reason: reasonController.text.trim(),
+            ),
+          );
+          Navigator.pop(context);
+        }
+      },
     );
   }
 }

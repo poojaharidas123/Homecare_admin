@@ -19,18 +19,11 @@ class ManagePatientsBloc
 
       try {
         if (event is GetAllPatientsEvent) {
-          // List<dynamic> temp = await supabaseClient.rpc(
-          //   'get_patients',
-          //   params: {
-          //     'query': event.query ?? '',
-          //   },
-          // );
           List<dynamic> temp = [];
-
           if (event.query != null) {
             temp = await queryTable
                 .select('*')
-                .eq('name', '%${event.query}%')
+                .ilike('name', '%${event.query}%')
                 .order('name', ascending: true);
           } else {
             temp = await queryTable.select('*').order('name', ascending: true);
@@ -40,6 +33,35 @@ class ManagePatientsBloc
               temp.map((e) => e as Map<String, dynamic>).toList();
 
           emit(ManagePatientsSuccessState(patients: patients));
+        } else if (event is AddPatientEvent) {
+          await supabaseClient.from('patients').insert({
+            'user_id': supabaseClient.auth.currentUser!.id,
+            'name': event.name,
+            'gender': event.gender,
+            'address': event.address,
+            'phone': event.phone,
+            'dob': event.dob,
+            'conditions': event.condition,
+            'medications': event.medications,
+          });
+          add(GetAllPatientsEvent());
+        } else if (event is EditPatientEvent) {
+          await supabaseClient.from('patients').update({
+            'name': event.name,
+            'gender': event.gender,
+            'address': event.address,
+            'phone': event.phone,
+            'dob': event.dob,
+            'conditions': event.condition,
+            'medications': event.medications,
+          }).eq('id', event.patientId);
+          add(GetAllPatientsEvent());
+        } else if (event is DeletePatientEvent) {
+          await supabaseClient
+              .from('patients')
+              .delete()
+              .eq('id', event.patientId);
+          add(GetAllPatientsEvent());
         }
       } catch (e, s) {
         Logger().e('$e\n$s');
