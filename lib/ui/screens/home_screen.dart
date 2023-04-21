@@ -7,8 +7,12 @@ import 'package:homecare_admin/ui/screens/home_screen_sections.dart/feedback_sec
 import 'package:homecare_admin/ui/screens/home_screen_sections.dart/user_management_section.dart';
 import 'package:homecare_admin/ui/screens/home_screen_sections.dart/complaint_section.dart';
 import 'package:homecare_admin/ui/screens/home_screen_sections.dart/dashboard_section.dart';
+import 'package:homecare_admin/ui/screens/login_screen.dart';
+import 'package:homecare_admin/ui/widgets/change_password.dart';
+import 'package:homecare_admin/ui/widgets/custom_alert_dialog.dart';
 import 'package:homecare_admin/ui/widgets/custom_card.dart';
 import 'package:homecare_admin/values/values.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../widgets/drawer_button.dart';
 
@@ -163,6 +167,46 @@ class _HomeScreenState extends State<HomeScreen>
                   tabController.animateTo(6);
                   setState(() {});
                   Navigator.pop(context);
+                },
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              CustomDrawerButton(
+                label: "Change Password",
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => const ChangePasswordDialog(),
+                  );
+                  //Navigator.pop(context);
+                },
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              CustomDrawerButton(
+                label: "Logout",
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => CustomAlertDialog(
+                      title: 'Logout',
+                      message: 'Are you sure that you want to logout ?',
+                      primaryButtonLabel: 'Logout',
+                      primaryOnPressed: () async {
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                            builder: (context) => const LoginScreen(),
+                          ),
+                          (route) => true,
+                        );
+                        await Supabase.instance.client.auth.signOut();
+                      },
+                      secondaryButtonLabel: 'Cancel',
+                      secondaryOnPressed: () => Navigator.pop(context),
+                    ),
+                  );
                 },
               ),
               const SizedBox(
