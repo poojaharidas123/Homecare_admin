@@ -27,6 +27,15 @@ class ManagePatientsBloc
           // );
           List<dynamic> temp = [];
 
+          if (event.query != null) {
+            temp = await queryTable
+                .select('*')
+                .eq('name', '%${event.query}%')
+                .order('name', ascending: true);
+          } else {
+            temp = await queryTable.select('*').order('name', ascending: true);
+          }
+
           List<Map<String, dynamic>> patients =
               temp.map((e) => e as Map<String, dynamic>).toList();
 

@@ -9,15 +9,9 @@ void main() async {
     anonKey:
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdqampvbm5obnBwbGtmYXRuYWJzIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY4MTkyMzM0NCwiZXhwIjoxOTk3NDk5MzQ0fQ.ZGBX6YVdK8vdQjtCqnrcOgJ6O6hu38dN0l1DM4piUEg',
   );
-  // await Supabase.instance.client.auth.admin.createUser(
-  //   AdminUserAttributes(
-  //       email: 'admin@homecare.com',
-  //       password: 'password',
-  //       emailConfirm: true,
-  //       userMetadata: {
-  //         'isAdmin': true,
-  //       }),
-  // );
+  // var tableDetails =
+  //     await Supabase.instance.client.rpc('get_all_table_details');
+  // print(tableDetails);
   runApp(const MyApp());
 }
 

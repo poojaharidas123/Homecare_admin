@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:homecare_admin/ui/screens/home_screen_sections.dart/nurse_management_section.dart';
 import 'package:homecare_admin/ui/screens/home_screen_sections.dart/nurse_request_section.dart';
 import 'package:homecare_admin/ui/screens/home_screen_sections.dart/payment_section.dart';
@@ -26,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen>
   void initState() {
     tabController = TabController(
       length: 7,
-      initialIndex: 2,
+      initialIndex: 3,
       vsync: this,
     );
     super.initState();
@@ -41,7 +42,15 @@ class _HomeScreenState extends State<HomeScreen>
         iconTheme: const IconThemeData(
           color: Colors.white,
         ),
-        title: const Text("HomeCare"),
+        title: Text(
+          "HomeCare",
+          style: GoogleFonts.dynalight(
+            textStyle: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.normal,
+                  color: secondaryColor,
+                ),
+          ),
+        ),
       ),
       body: TabBarView(
         controller: tabController,

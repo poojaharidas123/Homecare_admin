@@ -4,12 +4,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:homecare_admin/blocs/manage_nurse_requests/manage_nurse_request_bloc.dart';
 import 'package:homecare_admin/ui/screens/home_screen_sections.dart/user_management_section.dart';
 import 'package:homecare_admin/ui/widgets/custom_button.dart';
 import 'package:homecare_admin/ui/widgets/custom_card.dart';
 import 'package:homecare_admin/ui/widgets/custom_search.dart';
 import 'package:homecare_admin/ui/widgets/label_with_text.dart';
+import 'package:homecare_admin/util/get_age.dart';
+import 'package:homecare_admin/util/postgres_time_to_time_of_day.dart';
 import 'package:homecare_admin/values/values.dart';
+import 'package:intl/intl.dart';
+
+import '../../widgets/custom_alert_dialog.dart';
 
 class NurseRequestSection extends StatefulWidget {
   final bool fromDashboard;
@@ -24,85 +31,148 @@ class NurseRequestSection extends StatefulWidget {
 
 class _NurseRequestSectionState extends State<NurseRequestSection> {
   String _selectedStatus = 'pending';
+  String? query;
+  final ManageNurseRequestBloc manageNurseRequestBloc =
+      ManageNurseRequestBloc();
+
+  @override
+  void initState() {
+    super.initState();
+    getNurseRequests();
+  }
+
+  void getNurseRequests() {
+    manageNurseRequestBloc.add(
+      GetAllNurseRequestEvent(
+        status: _selectedStatus,
+        query: query,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        SizedBox(
-          width: 1000,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (!widget.fromDashboard)
-                const SizedBox(
-                  height: 60,
-                ),
-              if (!widget.fromDashboard)
-                const Text(
-                  'Home Nurse Request Management',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              if (!widget.fromDashboard)
-                const SizedBox(
-                  height: 20,
-                ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: CustomSearch(
-                      onSearch: (query) {},
-                    ),
+        BlocProvider<ManageNurseRequestBloc>.value(
+          value: manageNurseRequestBloc,
+          child: BlocConsumer<ManageNurseRequestBloc, ManageNurseRequestState>(
+            listener: (context, state) {
+              if (state is ManageNurseRequestFailureState) {
+                showDialog(
+                  context: context,
+                  builder: (context) => CustomAlertDialog(
+                    title: 'Failure',
+                    message: state.message,
+                    primaryButtonLabel: 'Retry',
+                    primaryOnPressed: () {
+                      getNurseRequests();
+                      Navigator.pop(context);
+                    },
                   ),
-                  if (!widget.fromDashboard) const SizedBox(width: 20),
-                  if (!widget.fromDashboard)
-                    CupertinoSlidingSegmentedControl<String>(
-                      groupValue: _selectedStatus,
-                      children: {
-                        'pending': Text(
-                          'Pending',
-                          style:
-                              Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                );
+              }
+            },
+            builder: (context, state) {
+              return SizedBox(
+                width: 1000,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (!widget.fromDashboard)
+                      const SizedBox(
+                        height: 60,
+                      ),
+                    if (!widget.fromDashboard)
+                      const Text(
+                        'Home Nurse Request Management',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    if (!widget.fromDashboard)
+                      const SizedBox(
+                        height: 20,
+                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: CustomSearch(
+                            onSearch: (q) {
+                              query = q;
+                              getNurseRequests();
+                            },
+                          ),
                         ),
-                        'active': Text(
-                          'Active',
-                          style:
-                              Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                        ),
-                        'complete': Text(
-                          'Complete',
-                          style:
-                              Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                        )
-                      },
-                      onValueChanged: (status) {
-                        _selectedStatus = status!;
-                        setState(() {});
-                      },
+                        if (!widget.fromDashboard) const SizedBox(width: 20),
+                        if (!widget.fromDashboard)
+                          CupertinoSlidingSegmentedControl<String>(
+                            groupValue: _selectedStatus,
+                            children: {
+                              'pending': Text(
+                                'Pending',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                              ),
+                              'active': Text(
+                                'Active',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                              ),
+                              'rejected': Text(
+                                'Rejected',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                              )
+                            },
+                            onValueChanged: (status) {
+                              _selectedStatus = status!;
+                              getNurseRequests();
+                              setState(() {});
+                            },
+                          ),
+                      ],
                     ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              const Divider(height: 1),
-              Expanded(
-                child: ListView.separated(
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  itemBuilder: (context, index) => const NurseRequestCard(),
-                  separatorBuilder: (context, index) =>
-                      const SizedBox(height: 10),
-                  itemCount: 10,
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const Divider(height: 1),
+                    Expanded(
+                      child: state is ManageNurseRequestSuccessState
+                          ? state.requests.isNotEmpty
+                              ? ListView.separated(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 20),
+                                  itemBuilder: (context, index) =>
+                                      NurseRequestCard(
+                                    nurseRequestDetails: state.requests[index],
+                                  ),
+                                  separatorBuilder: (context, index) =>
+                                      const SizedBox(height: 10),
+                                  itemCount: state.requests.length,
+                                )
+                              : const Center(
+                                  child: Text('No Nurse Requests Found'))
+                          : const Center(
+                              child: CupertinoActivityIndicator(),
+                            ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
+              );
+            },
           ),
         ),
       ],
@@ -111,8 +181,10 @@ class _NurseRequestSectionState extends State<NurseRequestSection> {
 }
 
 class NurseRequestCard extends StatelessWidget {
+  final dynamic nurseRequestDetails;
   const NurseRequestCard({
     super.key,
+    required this.nurseRequestDetails,
   });
 
   @override
@@ -133,13 +205,13 @@ class NurseRequestCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '#51344234214',
+                  '#${nurseRequestDetails['id'].toString()}',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                 ),
                 Text(
-                  'Pending',
+                  nurseRequestDetails['status'],
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: primaryColor,
                       ),
@@ -156,14 +228,14 @@ class NurseRequestCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Krithya M P',
+                      nurseRequestDetails['patient']['name'],
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
                     ),
                     const SizedBox(height: 5),
                     Text(
-                      '20 Female',
+                      '${getAge(DateTime.parse(nurseRequestDetails['patient']['dob']))} ${nurseRequestDetails['patient']['gender']}',
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
                           fontWeight: FontWeight.bold, color: Colors.black54),
                     ),
@@ -176,27 +248,59 @@ class NurseRequestCard extends StatelessWidget {
             ),
             Row(
               children: [
-                const Expanded(
+                Expanded(
                   child: LabelWithText(
-                    label: 'Time Range',
-                    text: '14/11/2022 - 14/01/2023',
+                    label: 'Date Range',
+                    text:
+                        '${DateFormat('dd/MM/yyyy').format(DateTime.parse(nurseRequestDetails['date_start']))} - ${DateFormat('dd/MM/yyyy').format(DateTime.parse(nurseRequestDetails['date_end']))} ',
                   ),
                 ),
-                const Expanded(
+                Expanded(
                   child: LabelWithText(
                     label: 'Time Range',
-                    text: '01:00 PM - 04:00 PM',
+                    text:
+                        '${convertPostgresTimeToTimeOfDay(nurseRequestDetails['time_start']).format(context)} - ${convertPostgresTimeToTimeOfDay(nurseRequestDetails['time_end']).format(context)}',
                   ),
                 ),
-                SizedBox(
-                  width: 150,
-                  child: CustomButton(
-                    label: 'Assign Request',
-                    onPressed: () {},
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 15,
-                      vertical: 10,
-                    ),
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        child: const Text('Assigned Nurse'),
+                        onPressed: () {},
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 15),
+            Row(
+              children: [
+                Expanded(
+                  child: LabelWithText(
+                    label: 'Accepted Nurse',
+                    text: nurseRequestDetails['assigned_nurse']['name'] ??
+                        'Not Accepted',
+                  ),
+                ),
+                Expanded(
+                  child: LabelWithText(
+                    label: 'Amount',
+                    text: nurseRequestDetails['amount']?.toString() ??
+                        'Not determined',
+                  ),
+                ),
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        child: const Text('View Assigned Nurse'),
+                        onPressed: () {},
+                      ),
+                    ],
                   ),
                 ),
               ],
