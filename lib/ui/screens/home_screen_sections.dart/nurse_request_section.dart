@@ -536,7 +536,7 @@ class _ReasonFormState extends State<ReasonForm> {
           controller: reasonController,
           minLines: 3,
           maxLines: 5,
-          validator: alphaNumericValidator,
+          validator: alphanumericWithSpaceValidator,
           decoration: const InputDecoration(
             hintText: 'Reason',
             prefixIcon: Icon(

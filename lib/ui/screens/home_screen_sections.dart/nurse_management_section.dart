@@ -206,7 +206,7 @@ class _AddNurseFormState extends State<AddNurseForm> {
                 children: [
                   TextFormField(
                     controller: _nameController,
-                    validator: alphaNumericValidator,
+                    validator: alphabeticWithSpaceValidator,
                     decoration: const InputDecoration(
                       hintText: 'Name',
                       prefixIcon: Icon(
@@ -325,7 +325,7 @@ class _AddNurseFormState extends State<AddNurseForm> {
                 children: [
                   TextFormField(
                     controller: _phoneController,
-                    validator: phoneValidator,
+                    validator: phoneNumberValidator,
                     decoration: const InputDecoration(
                       hintText: 'Phone Number',
                       prefixIcon: Icon(
@@ -347,7 +347,7 @@ class _AddNurseFormState extends State<AddNurseForm> {
                   const SizedBox(height: 10),
                   TextFormField(
                     controller: _experienceController,
-                    validator: alphaNumericValidator,
+                    validator: alphanumericWithSpecialCharsValidator,
                     decoration: const InputDecoration(
                       hintText: 'Experience',
                       prefixIcon: Icon(
@@ -358,7 +358,7 @@ class _AddNurseFormState extends State<AddNurseForm> {
                   const SizedBox(height: 10),
                   TextFormField(
                     controller: _qualificationController,
-                    validator: alphaNumericValidator,
+                    validator: alphanumericWithSpecialCharsValidator,
                     decoration: const InputDecoration(
                       hintText: 'Qualification',
                       prefixIcon: Icon(
